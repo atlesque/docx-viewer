@@ -6,4 +6,12 @@ export default defineNuxtConfig({
   devServer: {
     port: 8610,
   },
+  app: {
+    head: {
+      title: 'DOCX Viewer',
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      ],
+    },
+  },
 })
