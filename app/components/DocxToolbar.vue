@@ -16,7 +16,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex items-center gap-2 p-3 border-b border-gray-200 bg-white flex-wrap">
+  <div class="sticky top-0 z-10 flex items-center gap-2 p-3 border-b border-gray-200 bg-white flex-wrap">
     <!-- Open file -->
     <UButton
       icon="i-lucide-folder-open"
