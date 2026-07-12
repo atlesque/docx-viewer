@@ -12,3 +12,12 @@ body {
 #__nuxt {
     height: 100%;
 }
+
+.docx-render-wrapper {
+    background-color: transparent !important;
+}
+
+.docx-render {
+    background-color: #fff;
+    margin-bottom: 0 !important;
+}

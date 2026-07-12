@@ -27,20 +27,22 @@ export function useDocxZoom(containerRef: Ref<HTMLElement | null>) {
 
   function fitToScreen() {
     if (!containerRef.value) return
-    const wrapper = containerRef.value.querySelector('.docx-render') as HTMLElement | null
-    if (!wrapper) return
+    const el = containerRef.value
+    const docxRender = el.querySelector('.docx-render') as HTMLElement | null
+    if (!docxRender) return
 
-    const prevTransform = wrapper.style.transform
-    const prevOrigin = wrapper.style.transformOrigin
-    wrapper.style.transform = 'scale(1)'
-    wrapper.style.transformOrigin = 'top center'
-    const naturalWidth = wrapper.offsetWidth
-    wrapper.style.transform = prevTransform
-    wrapper.style.transformOrigin = prevOrigin
+    // Measure natural width of the document content at scale 1
+    const prevTransform = el.style.transform
+    const prevHeight = el.style.height
+    el.style.transform = 'scale(1)'
+    el.style.height = ''
+    const naturalWidth = docxRender.offsetWidth
+    el.style.transform = prevTransform
+    el.style.height = prevHeight
 
     if (naturalWidth === 0) return
 
-    const containerWidth = containerRef.value.clientWidth
+    const containerWidth = el.parentElement?.clientWidth ?? el.clientWidth
     const availableWidth = containerWidth - 32
     if (availableWidth <= 0) return
 
@@ -50,11 +52,24 @@ export function useDocxZoom(containerRef: Ref<HTMLElement | null>) {
 
   function applyZoom() {
     if (!containerRef.value) return
-    const wrapper = containerRef.value.querySelector('.docx-render') as HTMLElement | null
-    if (wrapper) {
-      wrapper.style.transform = `scale(${zoom.value})`
-      wrapper.style.transformOrigin = 'top center'
+    const el = containerRef.value
+    const z = zoom.value
+
+    el.style.transformOrigin = 'top center'
+
+    if (z === 1) {
+      el.style.transform = ''
+      el.style.height = ''
+      return
     }
+
+    // Temporarily reset to measure natural height
+    el.style.transform = 'scale(1)'
+    el.style.height = ''
+    // Force layout recalculation
+    const naturalHeight = el.scrollHeight
+    el.style.transform = `scale(${z})`
+    el.style.height = `${Math.round(naturalHeight * z)}px`
   }
 
   watch(zoom, applyZoom)

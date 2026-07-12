@@ -44,7 +44,7 @@ watch([hasDocument, isRendering], async ([doc, rendering]) => {
 
 <template>
   <div
-    class="fixed inset-0 flex flex-col bg-gray-100 transition-colors"
+    class="fixed inset-0 flex flex-col bg-white transition-colors"
     :class="{ 'bg-blue-50 outline-4 outline-dashed outline-blue-500 -outline-offset-4': isDraggingOver }"
     @dragover="handleDragOver"
     @dragleave="handleDragLeave"
@@ -64,19 +64,20 @@ watch([hasDocument, isRendering], async ([doc, rendering]) => {
       v-if="!hasDocument && !isRendering"
       :error-message="errorMessage"
       @open-file="openFileDialog"
+      class="flex-1 bg-gray-100"
     />
 
     <!-- Loading state -->
     <div
       v-if="isRendering"
-      class="flex-1 flex flex-col items-center justify-center gap-4 text-gray-500"
+      class="flex-1 flex flex-col items-center justify-center gap-4 text-gray-500 bg-gray-100"
     >
       <UIcon name="i-lucide-loader-circle" class="size-12 text-blue-500 animate-spin" />
       <p>Loading document…</p>
     </div>
 
     <!-- Document view -->
-    <div v-show="hasDocument" class="flex-1 flex flex-col overflow-hidden">
+    <div v-show="hasDocument" class="flex-1 flex flex-col overflow-auto bg-gray-100">
       <DocxToolbar
         :zoom-percent="zoomPercent"
         :can-zoom-in="canZoomIn"
@@ -89,7 +90,7 @@ watch([hasDocument, isRendering], async ([doc, rendering]) => {
         @reset-zoom="resetZoom"
       />
 
-      <div ref="containerRef" class="flex-1 overflow-auto px-2 sm:px-4 pb-4" />
+      <div ref="containerRef" class="px-2 sm:px-4 pb-4 bg-gray-100 min-h-0" />
     </div>
   </div>
 </template>
